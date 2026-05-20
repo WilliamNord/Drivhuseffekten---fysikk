@@ -2,38 +2,97 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block tittel %}Min Flask-app{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Klimamodel</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f0f4f8;
+            padding: 40px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1b4f72;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #2874a6;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #1f618d;
+        }
+
+        .resultat {
+            margin-top: 30px;
+            background: #eaf2f8;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+
 </head>
 <body>
 
-    <form action="/2" method="POST">
-        <label for="lag">Antall lag:</label>
-        <input type="number" name="lag" placeholder="hvor mange lag?">
-        <button type="submit">Simuler</button>
+<div class="container">
+
+    <h1>Simulering av drivhuseffekten</h1>
+
+    <form method="POST">
+
+        <label>Albedo (0-1)</label>
+        <input type="number" step="0.01" name="albedo" value="0.30">
+
+        <label>Drivhuseffekt ε (0-1): <span id="epsilon-verdi">{{ epsilon }}</span></label>
+        <input type="range" name="epsilon" value="{{ epsilon }}" min="0" max="1" step="0.01" oninput="document.getElementById('epsilon-verdi').innerText = this.value">
+
+        <button type="submit">Beregn temperatur</button>
+
     </form>
 
-    <p>jordoverflaten: {{ T_jord }}°C</p>
+    {% if temp_uten is not none %}
 
-    <ul>
-        {% for temp in T_atm_list %}
-            {% if temp < -200 %}
-                {% set color = "#1f1ffaff" %}
-            {% elif temp < 0 %}
-                {% set color = "#4169E1" %}
-            {% elif temp < 15 %}
-                {% set color = "#f7ca71ff" %}
-            {% elif temp < 50 %}
-                {% set color = "#ff5900ff" %}
-            {% else %}
-                {% set color = "#FF0000" %}
-            {% endif %}
-            <li style="color: {{ color }}; padding: 10px; margin: 5px;">
-                {{ temp }}°C
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="resultat">
+
+        <h2>Resultater</h2>
+
+        <p>
+            Temperatur uten atmosfære:
+            <strong>{{ temp_uten|round(1) }} °C</strong>
+        </p>
+
+        <p>
+            Temperatur med drivhuseffekt:
+            <strong>{{ temp_med|round(1) }} °C</strong>
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
 
 </body>
 </html>
