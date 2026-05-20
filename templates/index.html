@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block tittel %}Min Flask-app{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <form action="/2" method="POST">
+        <label for="lag">Antall lag:</label>
+        <input type="number" name="lag" placeholder="hvor mange lag?">
+        <button type="submit">Simuler</button>
+    </form>
+
+    <p>jordoverflaten: {{ T_jord }}°C</p>
+
+    <ul>
+        {% for temp in T_atm_list %}
+            {% if temp < -200 %}
+                {% set color = "#1f1ffaff" %}
+            {% elif temp < 0 %}
+                {% set color = "#4169E1" %}
+            {% elif temp < 15 %}
+                {% set color = "#f7ca71ff" %}
+            {% elif temp < 50 %}
+                {% set color = "#ff5900ff" %}
+            {% else %}
+                {% set color = "#FF0000" %}
+            {% endif %}
+            <li style="color: {{ color }}; padding: 10px; margin: 5px;">
+                {{ temp }}°C
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
