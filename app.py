@@ -28,8 +28,8 @@ def index():
 
     temp_uten = None
     temp_med = None
-    albedo = None
-    epsilon = None
+    albedo = 0.3
+    epsilon = 0.78
 
     if request.method == "POST":
 
@@ -43,7 +43,8 @@ def index():
         "index.html",
         temp_uten=temp_uten,
         temp_med=temp_med,
-        epsilon=epsilon
+        epsilon=epsilon,
+        albedo=albedo
     )
 
 
