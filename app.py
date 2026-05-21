@@ -28,6 +28,8 @@ def index():
 
     temp_uten = None
     temp_med = None
+    albedo = None
+    epsilon = None
 
     if request.method == "POST":
 
